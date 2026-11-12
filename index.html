@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Shikaku</title>
+  <meta name="description" content="Shikaku — мінімалістична головоломка: поділи поле на прямокутники.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // apply theme before paint to avoid flash
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('shikaku.theme'); } catch (e) {}
+      var vt = document.documentElement.getAttribute('data-theme');
+      if (!t && vt) t = vt === 'dark' ? 'night' : 'pastel';
+      if (!t) t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'night' : 'pastel';
+      document.documentElement.setAttribute('data-skin', t);
+    })();
+  </script>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <h1 class="logo">shikaku<span class="dot">.</span></h1>
+      <div class="themes" role="radiogroup" aria-label="Тема">
+        <button class="swatch" data-skin-pick="pastel" role="radio" aria-label="Пастель" title="Пастель"></button>
+        <button class="swatch" data-skin-pick="mint" role="radio" aria-label="М'ята" title="М'ята"></button>
+        <button class="swatch" data-skin-pick="sakura" role="radio" aria-label="Сакура" title="Сакура"></button>
+        <button class="swatch" data-skin-pick="night" role="radio" aria-label="Ніч" title="Ніч"></button>
+      </div>
+    </header>
+
+    <nav class="modes" aria-label="Режим">
+      <button class="chip" data-mode="daily">Пазл дня</button>
+      <span class="sep"></span>
+      <button class="chip" data-mode="easy">5×5</button>
+      <button class="chip" data-mode="medium">7×7</button>
+      <button class="chip" data-mode="hard">10×10</button>
+      <button class="chip" data-mode="expert">12×12</button>
+      <button class="chip" data-mode="master">15×15</button>
+    </nav>
+
+    <div class="status">
+      <span id="mode-label" class="muted"></span>
+      <span id="timer" class="timer">0:00</span>
+      <span id="progress" class="muted"></span>
+    </div>
+
+    <main class="stage">
+      <div id="board" class="board" aria-label="Ігрове поле"></div>
+    </main>
+
+    <div class="actions">
+      <button class="btn ghost" id="btn-clear" title="Очистити поле">Очистити</button>
+      <button class="btn ghost" id="btn-help" title="Як грати">Як грати</button>
+      <button class="btn" id="btn-new" title="Новий пазл">Новий пазл</button>
+    </div>
+  </div>
+
+  <div class="modal" id="win" hidden>
+    <div class="card">
+      <div class="win-title">Розв'язано!</div>
+      <div class="win-time" id="win-time">0:00</div>
+      <div class="win-sub muted" id="win-sub"></div>
+      <div class="card-actions">
+        <button class="btn ghost" id="win-close">Закрити</button>
+        <button class="btn" id="win-next">Наступний</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="help" hidden>
+    <div class="card help">
+      <div class="win-title small">Як грати</div>
+      <ol>
+        <li>Поділи все поле на прямокутники.</li>
+        <li>У кожному прямокутнику має бути <b>рівно одне число</b>.</li>
+        <li>Число дорівнює <b>площі</b> прямокутника (кількості клітинок).</li>
+      </ol>
+      <p class="muted">Тягни від клітинки до клітинки, щоб намалювати прямокутник. Торкнись прямокутника, щоб його прибрати.</p>
+      <div class="card-actions">
+        <button class="btn" id="help-close">Зрозуміло</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+  <script src="js/rng.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
